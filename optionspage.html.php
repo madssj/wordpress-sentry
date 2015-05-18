@@ -27,6 +27,15 @@
 						 ("User Notices" is recommended)
 					</td>
 				</tr>
+
+				<tr valign="top">
+					<th scope="row">
+						<label for="testnotify">Test notification</label>
+					</th>
+					<td>
+						<input type="submit" name="testnotify" id="testnotify" class="button-primary" value="Send test notification">
+					</td>
+				</tr>
 			</tbody>
 		</table>
 

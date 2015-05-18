@@ -14,12 +14,25 @@ require_once( dirname(__FILE__) . '/class.wp-raven-client.php' );
 class WPSentry extends WP_Raven_Client {
 
 	public function __construct() {
+
 		add_action('admin_menu', array($this, 'addOptionsPage'));
 
 		if (is_admin() && $_POST)
 			$this->saveOptions();
 
 		parent::__construct();
+
+
+		if (is_admin() && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['testnotify'])) {
+
+			add_action( 'admin_notices', array($this, 'test_error_notice' ));
+
+			trigger_error("Test notification from Sentry Wordpress plugin", E_USER_ERROR);
+		}
+	}
+
+	function test_error_notice() {
+		echo "<div class='updated'><p>Test notification sent.</p></div>";
 	}
 
 	public function addOptionsPage() {
@@ -42,7 +55,7 @@ class WPSentry extends WP_Raven_Client {
 			'reporting_level' => $_POST['sentry_reporting_level']
 		));
 	}
-	
+
 	public function getSettings() {
 		return $this->settings;
 	}
@@ -51,7 +64,7 @@ class WPSentry extends WP_Raven_Client {
 		try {
 			$wps = new WPSentry();
 		} catch (Exception $e) {
-			
+
 		}
 	}
 }
